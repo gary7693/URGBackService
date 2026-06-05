@@ -1,0 +1,25 @@
+# Build output
+bin/
+obj/
+publish/
+
+# Visual Studio / Rider
+.vs/
+*.user
+*.suo
+.idea/
+
+# NuGet
+*.nupkg
+packages/
+*.lock.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Sensitive config (keep appsettings.json, ignore overrides with real IPs if needed)
+appsettings.Production.json
