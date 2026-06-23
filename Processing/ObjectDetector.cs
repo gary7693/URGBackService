@@ -73,11 +73,14 @@ public class ObjectDetector
             return null;
         }
 
-        // 前景過濾：只保留比背景明顯更近的點
+        // 前景過濾：保留比背景明顯更近的點。
+        // 若該步距在暖機期間未建立背景（MaxValue，例如該方向的靜態背景落在
+        // includeRegion 之外而被過濾掉，使背景從未被記錄），則 region 內出現的
+        // 任何點都視為前景物件——否則框內、但背景在框外的方向將永遠偵測不到物件。
         var foreground = points
             .Where(p => p.StepIndex < _totalSteps &&
-                        _background[p.StepIndex] != double.MaxValue &&
-                        p.Distance < _background[p.StepIndex] - _foregroundThreshold)
+                        (_background[p.StepIndex] == double.MaxValue ||
+                         p.Distance < _background[p.StepIndex] - _foregroundThreshold))
             .ToList();
 
         if (foreground.Count == 0) return [];
